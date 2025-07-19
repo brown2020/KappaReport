@@ -1,0 +1,66 @@
+{
+  "title": "Model Explanation & Detailed IVIG Artifact Analysis",
+  "sections": [
+    {
+      "title": "Pre-Venetoclax Phase (Dara CyBorD) – Gompertz Model",
+      "content": [
+        "• y(t) = A·exp(-B·exp(-C·t))",
+        "  - Captures initial rapid kill under Dara CyBorD and plateau as resistant subclones emerge.",
+        "  - Projected κ by Oct 1, 2025: {proj_pre_final:.1f} mg/L (no CR reached)."
+      ]
+    },
+    {
+      "title": "Post-Venetoclax Phase (Dara + Ven + Dex) – Exponential Model",
+      "content": [
+        "• y(t) = A·exp(-k·t)",
+        "  - Reflects continuous BCL-2–dependent apoptosis enhanced by Daratumumab and Dex.",
+        "  - Projected VGPR (<{vgpr} mg/L) by {vgpr_date:%b %d, %Y}.",
+        "  - Projected CR  (<{cr} mg/L) by {cr_date:%b %d, %Y}."
+      ]
+    },
+    {
+      "title": "Clinical Timeline Notes",
+      "content": [
+        "• Treatment Regimen Evolution:",
+        "  - Dara CyBorD started: February 14, 2025",
+        "  - Changed to Dara Venetoclax Dex: April 10, 2025",
+        "  - Last dose of Dexamethasone: June 19, 2025",
+        "  - Dara Ven only: June 26, 2025 going forward",
+        "  - Currently considering Venetoclax monotherapy",
+        "",
+        "• Treatment Optimization:",
+        "  - Venetoclax absorption optimization discovered: July 4, 2025 (40g fat intake)"
+      ]
+    },
+    {
+      "title": "IVIG Impact Assessment",
+      "content": [
+        "• IVIG Administration:",
+        "  - First dose: May 8, 2025 (30 g)",
+        "  - Second dose: June 8, 2025 (30 g)",
+        "  - Third dose: July 11, 2025 (30 g)",
+        "",
+        "• Lambda Analysis:",
+        "  - λ dropped to 1.4 mg/L on May 1 (before first IVIG)",
+        "  - Remained at 1.4 mg/L throughout = assay detection limit",
+        "  - No evidence of λ artifacts from IVIG",
+        "",
+        "• Kappa Trajectory:",
+        "  - Post-venetoclax: 176.8 → 134.4 → 104.8 → 84.3... → 23.2 → 20.3 mg/L",
+        "  - Shows progressive slowing as it approaches and achieves CR threshold",
+        "",
+        "• Potential IVIG Contribution Calculation:",
+        "  - 30g IVIG contains ~5.25g κ light chains",
+        "  - In 5L plasma: 1,050 mg/L total κ pool",
+        "  - Even 1% release = 10.5 mg/L artifact",
+        "  - May contribute to observed κ levels, but magnitude unclear",
+        "",
+        "• Clinical Interpretation:",
+        "  - Primary pattern: natural treatment response kinetics",
+        "  - IVIG may contribute some artifact, but not definitively quantifiable",
+        "  - Latest κ = 20.3 mg/L (July 10) has achieved CR assuming some IVIG artifact (<19.4 mg/L)",
+        "  - Continued decline confirms sustained response despite potential IVIG artifacts"
+      ]
+    }
+  ]
+}
