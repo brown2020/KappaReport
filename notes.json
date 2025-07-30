@@ -1,21 +1,50 @@
 {
-  "title": "Model Explanation & Detailed IVIG Artifact Analysis",
+  "title": "Model Explanation & Notes",
   "sections": [
     {
       "title": "Pre-Venetoclax Phase (Dara CyBorD) – Gompertz Model",
       "content": [
         "• y(t) = A·exp(-B·exp(-C·t))",
-        "  - Captures initial rapid kill under Dara CyBorD and plateau as resistant subclones emerge.",
-        "  - Projected κ by Oct 1, 2025: {proj_pre_final:.1f} mg/L (no CR reached)."
+        "  - Data shows slowing decay rate approaching asymptote at 94.3 mg/L.",
+        "  - Natural Gompertz kinetics with increasing resistance over time.",
+        "  - Asymptote above VGPR threshold - would not reach deep response."
       ]
     },
     {
-      "title": "Post-Venetoclax Phase (Dara + Ven + Dex) – Exponential Model",
+      "title": "Post-Venetoclax Phase (Dara + Ven + Dex) – Gompertz Model",
       "content": [
-        "• y(t) = A·exp(-k·t)",
-        "  - Reflects continuous BCL-2–dependent apoptosis enhanced by Daratumumab and Dex.",
+        "• y(t) = A·exp(-B·exp(-C·t))",
+        "  - Data shows slowing decay rate approaching much lower asymptote at 9.7 mg/L.",
+        "  - Deeper displacement parameter indicating more substantial initial response.",
+        "  - Asymptote below CR threshold - achieves deep response level.",
         "  - Projected VGPR (<{vgpr} mg/L) by {vgpr_date:%b %d, %Y}.",
         "  - Projected CR  (<{cr} mg/L) by {cr_date:%b %d, %Y}."
+      ]
+    },
+    {
+      "title": "Gompertz Model Analysis - What the Data Shows",
+      "content": [
+        "• Pre-Venetoclax Gompertz Parameters:",
+        "  - A (asymptote): 94.3 mg/L = level where decay approaches zero",
+        "  - B (displacement): -1.629 = curve shape",
+        "  - C (decay rate): 0.01483 /day = rate of decay change over time",
+        "",
+        "• Post-Venetoclax Gompertz Parameters:",
+        "  - A (asymptote): 9.7 mg/L = much lower asymptotic level",
+        "  - B (displacement): -2.904 = deeper initial response",
+        "  - C (decay rate): 0.01405 /day = similar decay rate change",
+        "",
+        "• Key Data Patterns:",
+        "  - Both treatments show Gompertz kinetics (natural slowing over time)",
+        "  - Pre-venetoclax trajectory heads toward 94.3 mg/L (partial response level)",
+        "  - Post-venetoclax trajectory heads toward 9.7 mg/L (deep response level)",
+        "  - 90% reduction in asymptotic target (94.3 → 9.7 mg/L)",
+        "",
+        "• Clinical Interpretation:",
+        "  - Slowing decay rates are normal biological pattern, not treatment failure",
+        "  - Standard therapy would plateau above VGPR threshold",
+        "  - Venetoclax therapy approaches CR-level asymptote",
+        "  - Both show increasing resistance/slowing response over time - this is expected"
       ]
     },
     {
@@ -46,7 +75,7 @@
         "  - No evidence of λ artifacts from IVIG",
         "",
         "• Kappa Trajectory:",
-        "  - Post-venetoclax: 176.8 → 134.4 → 104.8 → 84.3... → 23.2 → 20.3 mg/L",
+        "  - Post-venetoclax: 176.8 → 134.4 → 104.8 → 84.3... → 23.2 → 20.3 mg/L → 19.5 mg/L → 17.2 mg/L",
         "  - Shows progressive slowing as it approaches and achieves CR threshold",
         "",
         "• Potential IVIG Contribution Calculation:",
@@ -56,10 +85,10 @@
         "  - May contribute to observed κ levels, but magnitude unclear",
         "",
         "• Clinical Interpretation:",
-        "  - Primary pattern: natural treatment response kinetics",
-        "  - IVIG may contribute some artifact, but not definitively quantifiable",
-        "  - Latest κ = 20.3 mg/L (July 10) has achieved CR assuming some IVIG artifact (<19.4 mg/L)",
-        "  - Continued decline confirms sustained response despite potential IVIG artifacts"
+        "  - Gompertz models show natural slowing decay patterns for both treatments",
+        "  - Key difference: asymptotic targets (94.3 vs 9.7 mg/L)",
+        "  - Latest κ = 17.2 mg/L (July 25) has achieved CR",
+        "  - Venetoclax changes the fundamental response ceiling from partial to deep response"
       ]
     }
   ]

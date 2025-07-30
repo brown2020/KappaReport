@@ -101,27 +101,37 @@ def main():
     def gompertz(x, A, B, C):
         return A * np.exp(-B * np.exp(-C * x))
 
+    # Pre-venetoclax Gompertz model
     x_pre = (df_pre["Date"] - df_pre["Date"].min()).dt.days.values
-    popt_g, _ = curve_fit(
+    popt_g_pre, _ = curve_fit(
         gompertz, x_pre, df_pre["Kappa"],
         p0=[df_pre["Kappa"].max(), 1, 0.05], maxfev=10000
     )
 
-    def exp_model(x, A, k):
-        return A * np.exp(-k * x)
+    print("\nPre-Venetoclax Gompertz Parameters:")
+    print(f"  A (asymptote): {popt_g_pre[0]:.1f} mg/L")
+    print(f"  B (displacement): {popt_g_pre[1]:.3f}")
+    print(f"  C (decay rate): {popt_g_pre[2]:.5f} /day")
 
+    # Post-venetoclax Gompertz model
     x_post = (df_post["Date"] - df_post["Date"].min()).dt.days.values
-    popt_e, _ = curve_fit(
-        exp_model, x_post, df_post["Kappa"], bounds=(0, [1000, 1])
+    popt_g_post, _ = curve_fit(
+        gompertz, x_post, df_post["Kappa"],
+        p0=[df_post["Kappa"].max(), 1, 0.05], maxfev=10000
     )
+
+    print("\nPost-Venetoclax Gompertz Parameters:")
+    print(f"  A (asymptote): {popt_g_post[0]:.1f} mg/L")
+    print(f"  B (displacement): {popt_g_post[1]:.3f}")
+    print(f"  C (decay rate): {popt_g_post[2]:.5f} /day")
 
     # Projections
     end = datetime.fromisoformat(settings["projection_end_date"])
     pre_dates = pd.date_range(df_pre["Date"].min(), end)
     post_dates = pd.date_range(df_post["Date"].min(), end)
-    proj_pre = gompertz((pre_dates - df_pre["Date"].min()).days, *popt_g)
-    proj_post = exp_model(
-        (post_dates - df_post["Date"].min()).days, *popt_e
+    proj_pre = gompertz((pre_dates - df_pre["Date"].min()).days, *popt_g_pre)
+    proj_post = gompertz(
+        (post_dates - df_post["Date"].min()).days, *popt_g_post
     )
 
     # Thresholds
@@ -154,7 +164,7 @@ def main():
         ax.plot(pre_dates, proj_pre, '--', color='green', linewidth=2,
                 label="Pre-Ven Gompertz")
         ax.plot(post_dates, proj_post, '--', color='blue', linewidth=2,
-                label="Post-Ven Exp")
+                label="Post-Ven Gompertz")
         ax.axhline(vgpr, color='purple', linestyle=':', linewidth=1.5,
                    label=f"VGPR (<{vgpr} mg/L)")
         ax.axhline(cr, color='red', linestyle=':', linewidth=1.5,
@@ -163,8 +173,8 @@ def main():
                    label=f"VGPR by {vgpr_date:%b %d, %Y}")
         ax.axvline(cr_date, color='red', linestyle=':', alpha=0.7,
                    label=f"CR by {cr_date:%b %d, %Y}")
-        ax.set_title("Kappa Light Chain: Linear Scale with Projections", 
-                    fontsize=12, fontweight='bold', pad=15)
+        ax.set_title("Kappa Light Chain: Linear Scale with Projections",
+                     fontsize=12, fontweight='bold', pad=15)
         ax.set_xlabel("Date", fontsize=10)
         ax.set_ylabel("Kappa (mg/L)", fontsize=10)
         ax.grid(True, alpha=0.3)
@@ -178,11 +188,12 @@ def main():
 
         # Page 2: Log Scale Chart
         fig, ax = plt.subplots(figsize=(7.5, 5.5))
-        ax.semilogy(df["Date"], df["Kappa"], 'o', markersize=4, label="Observed")
+        ax.semilogy(df["Date"], df["Kappa"], 'o', markersize=4,
+                    label="Observed")
         ax.semilogy(pre_dates, proj_pre, '--', color='green', linewidth=2,
                     label="Pre-Ven Gompertz")
         ax.semilogy(post_dates, proj_post, '--', color='blue', linewidth=2,
-                    label="Post-Ven Exp")
+                    label="Post-Ven Gompertz")
         ax.axhline(vgpr, color='purple', linestyle=':', linewidth=1.5,
                    label=f"VGPR (<{vgpr} mg/L)")
         ax.axhline(cr, color='red', linestyle=':', linewidth=1.5,
@@ -191,8 +202,8 @@ def main():
                    label=f"VGPR by {vgpr_date:%b %d, %Y}")
         ax.axvline(cr_date, color='red', linestyle=':', alpha=0.7,
                    label=f"CR by {cr_date:%b %d, %Y}")
-        ax.set_title("Kappa Light Chain: Log Scale with Projections", 
-                    fontsize=12, fontweight='bold', pad=15)
+        ax.set_title("Kappa Light Chain: Log Scale with Projections",
+                     fontsize=12, fontweight='bold', pad=15)
         ax.set_xlabel("Date", fontsize=10)
         ax.set_ylabel("Kappa (mg/L, log scale)", fontsize=10)
         ax.grid(True, which='both', alpha=0.3)
@@ -235,8 +246,8 @@ def main():
                 for j in range(len(tbl[0])):
                     table[(i, j)].set_facecolor('#f8f9fa')
         
-        plt.title("Free Light Chain Results", fontsize=14, 
-                 fontweight='bold', pad=25)
+        plt.title("Free Light Chain Results", fontsize=14,
+                  fontweight='bold', pad=25)
         plt.tight_layout()
         pdf.savefig(bbox_inches='tight', dpi=300)
         plt.close()
@@ -255,12 +266,12 @@ def main():
         ax.axis("off")
         
         # Title at top
-        fig.text(0.1, 0.95, notes_data["title"], 
-                fontsize=12, fontweight="bold")
+        fig.text(0.1, 0.95, notes_data["title"],
+                 fontsize=12, fontweight="bold")
         
         # Notes content starting right after title
         fig.text(0.1, 0.90, formatted_notes, fontsize=8, va="top",
-                wrap=True, verticalalignment='top')
+                 wrap=True, verticalalignment='top')
         
         plt.tight_layout()
         pdf.savefig(bbox_inches='tight', dpi=300)
